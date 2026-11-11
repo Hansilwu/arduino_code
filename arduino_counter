@@ -95,6 +95,9 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
             
 						counter++;
 						document.getElementById('txt1').value=counter;
+
+            fetch('/?FND='+counter,{method:'GET'});
+
 						step=2;
 					break;
 							
@@ -113,6 +116,7 @@ const char MAIN_page[] PROGMEM = R"rawliteral(
 						document.getElementById('txt1').value=0;
 						document.getElementById('lamp1').checked=false;
             fetch('/?LED='+false,{method:'GET'});
+            fetch('/?FND='+counter,{method:'GET'});
 						counter=0;
 					break;
 			
@@ -157,6 +161,12 @@ void handleRoot()
     else{
       aaa.setLEDs(0x00);
     }
+  }
+
+  if(server.hasArg("FND")){
+    String fnd=server.arg("FND");
+    int  fndvalue = fnd.toInt();
+    aaa.setDisplayToDecNumber(fndvalue, 0);
   }
 
   server.send(200,"text/html",MAIN_page);
